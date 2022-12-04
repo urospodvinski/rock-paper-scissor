@@ -10,13 +10,32 @@ function getComputerChoice() {
   }
 }
 
-let playerSelection = "";
-let computerSelection = "";
-
 let roundWinner = "";
 let message = "";
+let winner = "";
 let playerScore = 0;
 let computerScore = 0;
+let score = "";
+
+const buttons = document.querySelectorAll("button");
+const roundWin = document.createElement("p");
+const scoreBoard = document.createElement("p");
+const gameWinner = document.createElement("p");
+const resultContainer = document.querySelector("#result");
+
+buttons.forEach((button) => {
+  button.addEventListener("click", () => {
+    player = button.id;
+    computer = getComputerChoice();
+    game();
+    roundWin.textContent = message;
+    scoreBoard.textContent = score;
+    gameWinner.textContent = winner;
+    resultContainer.appendChild(roundWin);
+    resultContainer.appendChild(scoreBoard);
+    resultContainer.appendChild(gameWinner);
+  });
+});
 
 function playRound(playerSelection, computerSelection) {
   if (playerSelection === computerSelection) {
@@ -41,22 +60,15 @@ function playRound(playerSelection, computerSelection) {
     computerScore++;
     message = `You lose! ${computerSelection} beats ${playerSelection}`;
   }
+  score = `${playerScore} : ${computerScore}`;
 }
 
 function game() {
-  for (let i = 0; i < 5; i++) {
-    playerSelection = prompt("Rock, Paper, Scissors:").toLowerCase();
-    computerSelection = getComputerChoice();
-    playRound(playerSelection, computerSelection);
-    console.log(message);
+  playRound(player, computer);
+  if (playerScore === 5) {
+    winner = "You Won!";
   }
-  if (playerScore > computerScore) {
-    console.log("You have won the game!!! Congratulations! :D");
-  } else if (playerScore < computerScore) {
-    console.log("You have lost the game!!! :(((");
-  } else {
-    console.log("TIE !!!");
+  if (computerScore === 5) {
+    winner = "Computer Won :(";
   }
 }
-
-game();
